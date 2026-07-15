@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Princy</title>
+<title>Princy's Dashboard</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Playfair+Display:wght@600;700&display=swap');
 
@@ -26,13 +26,17 @@
 }
 
 *{box-sizing:border-box;}
+input,select,textarea,button{min-width:0;}
+html,body{max-width:100%;overflow-x:hidden;}
+#bgLayer{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:var(--bg);}
+.dashboard{position:relative;z-index:1;}
 body{margin:0;background:var(--bg);color:var(--text);font-family:'Roboto',sans-serif;padding-bottom:40px;}
 
 /* ===================== LAYOUT SHELL ===================== */
 .dashboard{max-width:1440px;margin:0 auto;padding:1.5rem 1.4rem 0;}
 
 /* ---- header ---- */
-.dash-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.3rem;background:linear-gradient(135deg, var(--primary), var(--secondary));border-radius:16px;padding:1.5rem 1.75rem;border:1px solid var(--border);}
+.dash-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.3rem;background:linear-gradient(135deg, var(--primary-a), var(--secondary-a));border-radius:16px;padding:1.5rem 1.75rem;border:1px solid var(--border);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
 .header-left{min-width:200px;}
 .eyebrow-row{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.7rem;}
 .eyebrow-tag{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;}
@@ -41,18 +45,22 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roboto',sans-s
 h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-spacing:-0.01em;}
 .route{font-size:0.78rem;color:var(--muted);font-weight:400;margin-bottom:0.2rem;}
 .sync-status{font-size:0.78rem;font-weight:500;}
+.bg-settings-link{border:none;background:none;color:var(--muted);font-family:'Roboto',sans-serif;font-size:0.72rem;text-decoration:underline;cursor:pointer;padding:0;}
+.bg-settings-link:hover{color:var(--text);}
+.bg-settings-row{display:flex;justify-content:center;margin-top:1.6rem;}
 
 .stat-row{display:flex;gap:0.7rem;flex:none;justify-content:center;align-items:center;}
-.stat-card{background:rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:0.85rem 1.3rem;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:105px;}
+.stat-card{background:rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:0.85rem 1.3rem;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:105px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
 .stat-num{font-size:1.35rem;font-weight:900;line-height:1;}
 .stat-label{font-size:0.66rem;color:var(--muted);margin-top:0.25rem;text-align:center;}
 
-/* ----  grid ---- */
-.dash-grid{display:grid;grid-template-columns:1fr;gap:1.1rem;align-items:start;}
+/* ---- dashboard grid ---- */
+.dash-grid{display:grid;grid-template-columns:1fr;gap:1.1rem;align-items:start;min-width:0;}
+.col-left, .col-right{min-width:0;}
 @media(min-width:980px){ .dash-grid{grid-template-columns:0.95fr 1.15fr;} }
 
 /* ---- generic panel ---- */
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.1rem;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.1rem;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
 .panel-head{display:flex;align-items:center;justify-content:space-between;gap:0.6rem;margin-bottom:0.85rem;}
 .panel-title{font-weight:700;font-size:0.95rem;display:flex;align-items:center;gap:0.45rem;}
 
@@ -63,7 +71,7 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 .add-category button{background:var(--primary);color:var(--text);border:none;border-radius:6px;padding:0 1.1rem;font-family:'Roboto',sans-serif;font-weight:500;font-size:0.82rem;cursor:pointer;}
 .add-category button:hover{filter:brightness(1.2);}
 
-.category{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:0.9rem;overflow:hidden;}
+.category{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:0.9rem;overflow:hidden;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
 .cat-head{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1rem;background:var(--surface-2);border-bottom:1px solid var(--border);gap:0.6rem;}
 .cat-head-left{display:flex;align-items:center;gap:0.55rem;min-width:0;}
 .cat-arrow{flex:none;border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.7rem;transition:transform 0.2s;padding:0.1rem;}
@@ -112,7 +120,7 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 .add-item-row button{border:none;background:none;color:var(--accent);font-weight:500;font-size:0.83rem;cursor:pointer;}
 .empty-cat{font-size:0.83rem;color:var(--muted);font-style:italic;padding:0.5rem 0.1rem;}
 
-.reset-row{display:flex;align-items:center;gap:0.6rem;justify-content:center;margin:1.5rem 0 0.5rem;}
+.reset-row{display:flex;align-items:center;gap:0.6rem;justify-content:center;margin:0.6rem 0 0.5rem;}
 .reset-link{font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;}
 .reset-link.armed{color:var(--danger);font-weight:700;text-decoration:none;}
 .reset-cancel{font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;}
@@ -193,6 +201,8 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 .pill-select.bills-n{background:rgba(231,76,60,0.18);color:var(--red);}
 .pill-select.bills-empty{background:rgba(255,255,255,0.08);color:var(--muted);}
 .pill-select option{background:var(--surface-2);color:var(--text);}
+.app-cell{border-radius:4px;padding:0.1rem 0.3rem;margin:-0.1rem -0.3rem;display:inline-block;min-width:24px;}
+.app-cell:focus{outline:none;background:rgba(255,255,255,0.06);}
 
 /* ===================== QUICK NOTE ===================== */
 .notes-area{width:100%;min-height:110px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Roboto',sans-serif;font-size:0.86rem;line-height:1.5;padding:0.7rem 0.85rem;resize:vertical;}
@@ -203,7 +213,7 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 .currency-toggle{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:0.15rem;flex:none;}
 .cur-btn{border:none;background:none;color:var(--muted);font-family:'Roboto',sans-serif;font-weight:600;font-size:0.72rem;padding:0.35rem 0.75rem;border-radius:6px;cursor:pointer;}
 .cur-btn.active{background:var(--secondary);color:#062019;}
-.spent-card{background:var(--surface-2);border:1px solid var(--secondary);border-radius:10px;padding:0.85rem 1rem;margin-top:0.9rem;}
+.spent-card{background:var(--surface-2);border:1px solid var(--secondary);border-radius:10px;padding:0.85rem 1rem;margin-top:0.9rem;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 .spent-label{font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.4rem;}
 .spent-values{display:flex;gap:1.6rem;}
 .spent-values div span{display:block;}
@@ -213,8 +223,24 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 /* ===================== TRAVEL ITINERARY ===================== */
 .itin-head-row{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;justify-content:space-between;}
 .itin-select{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:0.35rem 0.6rem;font-family:'Roboto',sans-serif;font-size:0.78rem;}
+
+/* ---- add trip modal ---- */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.4rem;width:320px;max-width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.4);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}
+.modal-title{font-weight:700;font-size:1rem;margin-bottom:1rem;}
+.modal-label{display:block;font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;margin-bottom:0.35rem;}
+.modal-optional{text-transform:none;letter-spacing:0;font-weight:400;}
+.modal-input{width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:0.55rem 0.7rem;font-family:'Roboto',sans-serif;font-size:0.86rem;margin-bottom:1rem;}
+.modal-input[type=file]{padding:0.4rem;font-size:0.78rem;color:var(--muted);}
+.modal-input:focus{outline:none;border-color:var(--accent);}
+.modal-actions{display:flex;justify-content:flex-end;gap:0.6rem;margin-top:0.2rem;}
+.modal-btn-cancel{background:none;border:none;color:var(--muted);font-family:'Roboto',sans-serif;font-size:0.82rem;cursor:pointer;padding:0.5rem 0.7rem;}
+.modal-btn-cancel:hover{color:var(--text);}
+.modal-btn-add{background:var(--accent);color:#08130d;border:none;border-radius:7px;padding:0.5rem 1rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Roboto',sans-serif;}
+.modal-btn-add:hover{filter:brightness(1.08);}
 .itin-range{font-size:0.72rem;color:var(--muted);}
-.itin-box{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:0.7rem 0.85rem;margin-top:0.9rem;}
+.itin-box{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:0.7rem 0.85rem;margin-top:0.9rem;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 .itin-box-title{font-size:0.72rem;font-weight:700;color:var(--secondary);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.35rem;}
 .itin-box ul{margin:0;padding-left:1.1rem;font-size:0.8rem;color:var(--text);line-height:1.6;}
 .itin-box ul li{margin-bottom:0.1rem;}
@@ -269,53 +295,36 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 
 /* ===================== BUDGET SECTION ===================== */
 .budget-panel{grid-column:1 / -1;}
-.budget-top-row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:1rem;}
-.budget-card{flex:1;min-width:190px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1rem;}
-.budget-card-label{font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:0.5rem;}
-.budget-title-serif{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;margin-bottom:0.15rem;}
-.budget-amount{font-size:1.5rem;font-weight:900;margin:0.2rem 0 0.6rem;}
-.budget-month-select{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:0.35rem 0.5rem;font-family:'Roboto',sans-serif;font-size:0.78rem;}
+.budget-amount-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1rem;max-width:260px;margin-bottom:1.1rem;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.budget-title-serif{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;margin-bottom:0.5rem;}
+.budget-amount-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:1.5rem;font-weight:900;padding:0.2rem 0;font-family:'Roboto',sans-serif;}
+.budget-amount-input:focus{outline:none;border-color:var(--accent);}
 
-.mini-ring-wrap{position:relative;width:70px;height:70px;margin:0 auto;}
-.mini-ring-wrap svg{transform:rotate(-90deg);width:100%;height:100%;}
-.mini-ring-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.72rem;text-align:center;}
-
-.bar-chart{display:flex;align-items:flex-end;gap:0.8rem;height:90px;margin-top:0.4rem;}
-.bar-group{display:flex;flex-direction:column;align-items:center;flex:1;height:100%;justify-content:flex-end;}
-.bar-pair{display:flex;align-items:flex-end;gap:3px;height:100%;}
-.bar{width:9px;border-radius:3px 3px 0 0;}
-.bar.planned{background:var(--secondary);}
-.bar.actual{background:var(--pink);}
-.bar-group-label{font-size:0.62rem;color:var(--muted);margin-top:0.35rem;}
-.bar-legend{display:flex;gap:0.9rem;font-size:0.64rem;color:var(--muted);margin-top:0.5rem;justify-content:center;}
-.bar-legend span{display:inline-flex;align-items:center;gap:0.3rem;}
-.bar-legend .sw{width:7px;height:7px;border-radius:2px;}
-
-.donut-wrap{display:flex;align-items:center;gap:0.8rem;}
-.donut{width:70px;height:70px;border-radius:50%;flex:none;}
-.donut-legend{font-size:0.66rem;color:var(--muted);display:flex;flex-direction:column;gap:0.3rem;}
-.donut-legend span{display:flex;align-items:center;gap:0.35rem;}
-.donut-legend .sw{width:7px;height:7px;border-radius:2px;flex:none;}
-
-.budget-tables-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9rem;margin-bottom:0.9rem;}
-@media(max-width:1100px){ .budget-tables-row{grid-template-columns:repeat(2,1fr);} }
-@media(max-width:640px){ .budget-tables-row{grid-template-columns:1fr;} }
-.budget-table-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:0.8rem 0.9rem;}
+.budget-tables-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.9rem;}
+.budget-table-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:0.8rem 0.9rem;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 .budget-table-title{font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:0.5rem;}
-.budget-table{width:100%;border-collapse:collapse;font-size:0.74rem;}
+.budget-table{width:100%;border-collapse:collapse;font-size:0.76rem;}
 .budget-table th{text-align:right;color:var(--muted);font-weight:600;font-size:0.6rem;text-transform:uppercase;padding:0.2rem 0.3rem;}
 .budget-table th:first-child{text-align:left;}
-.budget-table td{padding:0.28rem 0.3rem;border-bottom:1px dashed var(--border);}
+.budget-table td{padding:0.26rem 0.3rem;border-bottom:1px dashed var(--border);}
 .budget-table td:not(:first-child){text-align:right;}
-.budget-table tr:last-child td{border-bottom:none;}
 .budget-table tr.total-row td{font-weight:800;border-top:1px solid var(--border);border-bottom:none;padding-top:0.4rem;}
-
-.budget-bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;}
-@media(max-width:640px){ .budget-bottom-row{grid-template-columns:1fr;} }
+.budget-table .be{display:inline-block;min-width:60px;border-radius:4px;padding:0.05rem 0.2rem;margin:-0.05rem -0.2rem;}
+.budget-table .be:focus{outline:none;background:var(--surface);}
+.budget-table .bnum{width:100%;background:transparent;border:none;color:var(--text);font-family:'Roboto',sans-serif;font-size:0.76rem;text-align:right;padding:0.15rem 0.2rem;border-radius:4px;}
+.budget-table .bnum:focus{outline:none;background:var(--surface);}
+.budget-table .bnum-readonly{color:var(--muted);font-weight:600;}
+.budget-table .brow-del{width:22px;text-align:center;}
+.budget-table .brow-del button{border:none;background:none;color:var(--border);cursor:pointer;font-size:0.75rem;}
+.budget-table tr:hover .brow-del button{color:var(--muted);}
+.budget-add-row{display:flex;gap:0.35rem;margin-top:0.5rem;}
+.budget-add-row input{flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:0.25rem 0.4rem;font-size:0.72rem;color:var(--text);font-family:'Roboto',sans-serif;}
+.budget-add-row input.bnum-add{flex:none;width:56px;text-align:right;}
+.budget-add-row button{border:none;background:none;color:var(--accent);font-weight:700;font-size:0.85rem;cursor:pointer;padding:0 0.3rem;}
 
 /* ===================== RESPONSIVE ===================== */
 @media(max-width:640px){
-  .{padding:1.1rem 0.9rem 0;}
+  .dashboard{padding:1.1rem 0.9rem 0;}
   .dash-header{flex-direction:column;}
   .stat-row{width:100%;}
   .stat-card{flex:1;}
@@ -324,7 +333,9 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 </head>
 <body>
 
-<div class="">
+<div id="bgLayer"></div>
+
+<div class="dashboard">
 
   <!-- HEADER -->
   <div class="dash-header">
@@ -414,16 +425,16 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
         </div>
       </div>
 
-      <!-- APPLICATION TRACKER (static) -->
+      <!-- APPLICATION TRACKER (editable) -->
       <div class="panel">
-        <div class="panel-title" style="margin-bottom:0.7rem;">Application Tracker</div>
+        <div class="panel-head">
+          <div class="panel-title">Application Tracker</div>
+          <button class="acc-add-btn" id="appAddBtn">+ Add</button>
+        </div>
         <div class="mini-table-wrap">
           <table class="mini-table">
-            <tr><th>#</th><th>Company</th><th>Role</th><th>Status</th><th>Salary Range</th><th>Date Applied</th></tr>
-            <tr><td>1</td><td>Google (UK)</td><td>Product Manager</td><td><span class="pill pill-working">Working</span></td><td>£80k – £120k</td><td>2024/08/01</td></tr>
-            <tr><td>2</td><td>Spotify</td><td>Song Source Engineer</td><td><span class="pill pill-applied">Applied</span></td><td>£60k – £90k</td><td>2024/08/12</td></tr>
-            <tr><td>3</td><td>Adobe</td><td>Exp. Data Analyst</td><td><span class="pill pill-interviewing">Interviewing</span></td><td>£70k – £110k</td><td>2024/08/22</td></tr>
-            <tr><td>4</td><td>Startup (Acme)</td><td>Marketing Lead</td><td><span class="pill pill-rejected">Rejected</span></td><td>–</td><td>2024/08/22</td></tr>
+            <tr><th>#</th><th>Company</th><th>Role</th><th>Status</th><th>Salary Range</th><th>Date Applied</th><th></th></tr>
+            <tbody id="appTableBody"></tbody>
           </table>
         </div>
       </div>
@@ -445,6 +456,7 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
         <div class="itin-head-row">
           <div class="panel-title">Travel Itinerary</div>
           <select class="itin-select" id="itinTripSelect"></select>
+          <button class="acc-add-btn" id="itinAddTripBtn">+ Add Trip</button>
           <button class="itin-trip-del" id="itinTripDelBtn" title="Delete this trip">✕</button>
         </div>
         <div class="itin-trip-meta">
@@ -482,155 +494,126 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 
     </div>
 
-    <!-- ============ BUDGET (full width, static) ============ -->
+    <!-- ============ BUDGET (editable) ============ -->
     <div class="panel budget-panel">
-      <div class="budget-top-row">
-        <div class="budget-card">
-          <div class="budget-title-serif">Monthly<br>Budget</div>
-          <div class="budget-amount">£3,900.00</div>
-          <div class="budget-card-label" style="margin-bottom:0.3rem;">Choose month</div>
-          <select class="budget-month-select"><option>May 2026</option><option>June 2026</option><option>July 2026</option></select>
-        </div>
+      <div class="panel-title" style="margin-bottom:0.9rem;">Monthly Budget</div>
 
-        <div class="budget-card" style="text-align:center;">
-          <div class="budget-card-label">Left to Spend</div>
-          <div class="mini-ring-wrap">
-            <svg viewBox="0 0 80 80">
-              <circle cx="40" cy="40" r="34" fill="none" stroke="var(--border)" stroke-width="9"></circle>
-              <circle cx="40" cy="40" r="34" fill="none" stroke="var(--red)" stroke-width="9" stroke-linecap="round"
-                stroke-dasharray="213.6" stroke-dashoffset="19" transform="rotate(-90 40 40)"></circle>
-            </svg>
-            <div class="mini-ring-val">£1,365</div>
-          </div>
-        </div>
-
-        <div class="budget-card">
-          <div class="budget-card-label">Planned vs Actual</div>
-          <div class="bar-chart">
-            <div class="bar-group">
-              <div class="bar-pair"><div class="bar planned" style="height:65px;"></div><div class="bar actual" style="height:65px;"></div></div>
-              <div class="bar-group-label">Rent</div>
-            </div>
-            <div class="bar-group">
-              <div class="bar-pair"><div class="bar planned" style="height:27px;"></div><div class="bar actual" style="height:25px;"></div></div>
-              <div class="bar-group-label">Food</div>
-            </div>
-            <div class="bar-group">
-              <div class="bar-pair"><div class="bar planned" style="height:12px;"></div><div class="bar actual" style="height:11px;"></div></div>
-              <div class="bar-group-label">Transport</div>
-            </div>
-            <div class="bar-group">
-              <div class="bar-pair"><div class="bar planned" style="height:30px;"></div><div class="bar actual" style="height:28px;"></div></div>
-              <div class="bar-group-label">Others</div>
-            </div>
-          </div>
-          <div class="bar-legend">
-            <span><span class="sw" style="background:var(--secondary);"></span>Planned</span>
-            <span><span class="sw" style="background:var(--pink);"></span>Actual</span>
-          </div>
-        </div>
-
-        <div class="budget-card">
-          <div class="budget-card-label">Expenses Breakdown</div>
-          <div class="donut-wrap">
-            <div class="donut" style="background:conic-gradient(var(--orange) 0% 30%, var(--secondary) 30% 50%, var(--purple) 50% 75%, var(--blue) 75% 90%, var(--muted) 90% 100%);"></div>
-            <div class="donut-legend">
-              <span><span class="sw" style="background:var(--orange);"></span>Accommodation</span>
-              <span><span class="sw" style="background:var(--secondary);"></span>Food</span>
-              <span><span class="sw" style="background:var(--purple);"></span>Transport</span>
-              <span><span class="sw" style="background:var(--blue);"></span>Bills</span>
-              <span><span class="sw" style="background:var(--muted);"></span>Other</span>
-            </div>
-          </div>
-        </div>
+      <div class="budget-amount-card">
+        <div class="budget-title-serif">Monthly Budget</div>
+        <input type="text" class="budget-amount-input" id="budgetMonthlyInput" value="">
       </div>
 
       <div class="budget-tables-row">
         <div class="budget-table-card">
           <div class="budget-table-title">Income</div>
-          <table class="budget-table">
-            <tr><th>Description</th><th>Planned</th><th>Actual</th></tr>
-            <tr><td>Salary</td><td>£2,100</td><td>£2,100</td></tr>
-            <tr><td>Freelance</td><td>£500</td><td>£400</td></tr>
-            <tr><td>Business Income</td><td>£300</td><td>£250</td></tr>
-            <tr><td>Interest Income</td><td>£100</td><td>£120</td></tr>
-            <tr><td>Other Income</td><td>£100</td><td>£80</td></tr>
-            <tr class="total-row"><td>Total</td><td>£3,100</td><td>£2,950</td></tr>
+          <table class="budget-table" data-btable="income">
+            <tr><th>Description</th><th>Planned</th><th>Actual</th><th></th></tr>
+            <tbody id="budgetRows-income"></tbody>
           </table>
+          <div class="budget-add-row" data-badd="income">
+            <input type="text" class="new-b-desc" placeholder="Description">
+            <input type="text" class="new-b-a bnum-add" placeholder="0">
+            <input type="text" class="new-b-b bnum-add" placeholder="0">
+            <button class="add-brow-btn">+</button>
+          </div>
         </div>
 
         <div class="budget-table-card">
           <div class="budget-table-title">Fixed Expenses</div>
-          <table class="budget-table">
-            <tr><th>Description</th><th>Planned</th><th>Actual</th></tr>
-            <tr><td>Rent</td><td>£650</td><td>£650</td></tr>
-            <tr><td>Utilities</td><td>£140</td><td>£130</td></tr>
-            <tr><td>Internet</td><td>£35</td><td>£35</td></tr>
-            <tr><td>Mobile</td><td>£25</td><td>£20</td></tr>
-            <tr><td>Insurance</td><td>£50</td><td>£40</td></tr>
-            <tr><td>Subscription</td><td>£45</td><td>£40</td></tr>
-            <tr class="total-row"><td>Total</td><td>£945</td><td>£925</td></tr>
+          <table class="budget-table" data-btable="fixed">
+            <tr><th>Description</th><th>Planned</th><th>Actual</th><th></th></tr>
+            <tbody id="budgetRows-fixed"></tbody>
           </table>
+          <div class="budget-add-row" data-badd="fixed">
+            <input type="text" class="new-b-desc" placeholder="Description">
+            <input type="text" class="new-b-a bnum-add" placeholder="0">
+            <input type="text" class="new-b-b bnum-add" placeholder="0">
+            <button class="add-brow-btn">+</button>
+          </div>
         </div>
 
         <div class="budget-table-card">
           <div class="budget-table-title">Variable Expenses</div>
-          <table class="budget-table">
-            <tr><th>Description</th><th>Planned</th><th>Actual</th></tr>
-            <tr><td>Groceries</td><td>£175</td><td>£160</td></tr>
-            <tr><td>Dining Out</td><td>£90</td><td>£85</td></tr>
-            <tr><td>Transport</td><td>£120</td><td>£110</td></tr>
-            <tr><td>Shopping</td><td>£100</td><td>£90</td></tr>
-            <tr><td>Entertainment</td><td>£80</td><td>£90</td></tr>
-            <tr><td>Health</td><td>£90</td><td>£45</td></tr>
-            <tr><td>Miscellaneous</td><td>£80</td><td>£70</td></tr>
-            <tr class="total-row"><td>Total</td><td>£705</td><td>£660</td></tr>
+          <table class="budget-table" data-btable="variable">
+            <tr><th>Description</th><th>Planned</th><th>Actual</th><th></th></tr>
+            <tbody id="budgetRows-variable"></tbody>
           </table>
+          <div class="budget-add-row" data-badd="variable">
+            <input type="text" class="new-b-desc" placeholder="Description">
+            <input type="text" class="new-b-a bnum-add" placeholder="0">
+            <input type="text" class="new-b-b bnum-add" placeholder="0">
+            <button class="add-brow-btn">+</button>
+          </div>
         </div>
 
         <div class="budget-table-card">
           <div class="budget-table-title">Savings</div>
-          <table class="budget-table">
-            <tr><th>Description</th><th>Planned</th><th>Actual</th></tr>
-            <tr><td>Emergency Fund</td><td>£300</td><td>£200</td></tr>
-            <tr><td>Travel Fund</td><td>£150</td><td>£150</td></tr>
-            <tr><td>Investment Fund</td><td>£200</td><td>£180</td></tr>
-            <tr><td>Education Fund</td><td>£100</td><td>£100</td></tr>
-            <tr><td>Other Savings</td><td>£100</td><td>£100</td></tr>
-            <tr class="total-row"><td>Total</td><td>£750</td><td>£730</td></tr>
+          <table class="budget-table" data-btable="savings">
+            <tr><th>Description</th><th>Planned</th><th>Actual</th><th></th></tr>
+            <tbody id="budgetRows-savings"></tbody>
           </table>
+          <div class="budget-add-row" data-badd="savings">
+            <input type="text" class="new-b-desc" placeholder="Description">
+            <input type="text" class="new-b-a bnum-add" placeholder="0">
+            <input type="text" class="new-b-b bnum-add" placeholder="0">
+            <button class="add-brow-btn">+</button>
+          </div>
         </div>
-      </div>
 
-      <div class="budget-bottom-row">
-        <div class="budget-table-card">
-          <div class="budget-table-title">Summary</div>
-          <table class="budget-table">
-            <tr><th>Type</th><th>Planned</th><th>Actual</th></tr>
-            <tr><td>Total Income</td><td>£3,100</td><td>£2,950</td></tr>
-            <tr><td>Total Expenses</td><td>£1,650</td><td>£1,585</td></tr>
-            <tr><td>Total Savings</td><td>£750</td><td>£730</td></tr>
-            <tr class="total-row"><td>Left to Spend</td><td>£1,450</td><td>£1,365</td></tr>
-          </table>
-        </div>
         <div class="budget-table-card">
           <div class="budget-table-title">Debts</div>
-          <table class="budget-table">
-            <tr><th>Description</th><th>Planned</th><th>Actual</th></tr>
-            <tr><td>Student Loan</td><td>£300</td><td>£290</td></tr>
-            <tr><td>Credit Card</td><td>£100</td><td>£90</td></tr>
-            <tr><td>Personal Loan</td><td>£100</td><td>£90</td></tr>
-            <tr><td>Other Loan</td><td>£0</td><td>£0</td></tr>
-            <tr class="total-row"><td>Total</td><td>£500</td><td>£470</td></tr>
+          <table class="budget-table" data-btable="debts">
+            <tr><th>Description</th><th>Total</th><th>Paid</th><th>Left</th><th></th></tr>
+            <tbody id="budgetRows-debts"></tbody>
           </table>
+          <div class="budget-add-row" data-badd="debts">
+            <input type="text" class="new-b-desc" placeholder="Description">
+            <input type="text" class="new-b-a bnum-add" placeholder="Total">
+            <input type="text" class="new-b-b bnum-add" placeholder="Paid">
+            <button class="add-brow-btn">+</button>
+          </div>
         </div>
       </div>
     </div>
 
   </div>
 
+  <div class="bg-settings-row">
+    <button class="bg-settings-link" id="bgSettingsBtn">Background</button>
+  </div>
   <div class="reset-row" id="resetRow"></div>
 
+</div>
+
+<div class="modal-overlay" id="addTripOverlay">
+  <div class="modal-card">
+    <div class="modal-title">Add a new trip</div>
+    <label class="modal-label" for="modalTripName">Trip name</label>
+    <input type="text" class="modal-input" id="modalTripName" placeholder="e.g., Tokyo Trip">
+    <label class="modal-label" for="modalTripRange">Dates <span class="modal-optional">(optional)</span></label>
+    <input type="text" class="modal-input" id="modalTripRange" placeholder="e.g., Dec 1 – Dec 5">
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" id="modalCancelBtn">Cancel</button>
+      <button class="modal-btn-add" id="modalAddBtn">Add Trip</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="bgOverlay">
+  <div class="modal-card">
+    <div class="modal-title">Background image</div>
+    <label class="modal-label" for="bgUrlInput">Image URL</label>
+    <input type="text" class="modal-input" id="bgUrlInput" placeholder="https://example.com/photo.jpg">
+    <label class="modal-label" for="bgFileInput">Or upload a photo</label>
+    <input type="file" class="modal-input" id="bgFileInput" accept="image/*">
+    <div class="modal-actions" style="justify-content:space-between;">
+      <button class="modal-btn-cancel" id="bgRemoveBtn">Remove background</button>
+      <div style="display:flex;gap:0.6rem;">
+        <button class="modal-btn-cancel" id="bgCancelBtn">Cancel</button>
+        <button class="modal-btn-add" id="bgApplyBtn">Apply</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
@@ -638,6 +621,7 @@ h1{font-weight:900;font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 0.25rem;letter-
 /* ===================== REUSABLE TEMPLATE CONFIG ===================== */
 /* Swap these values to reuse this tracker for someone else's move.     */
 const CONFIG = {
+  university: "Oxford Brookes",
   student: "Princy",
   departureDate: "2026-09-07",
   colors: {
@@ -662,6 +646,13 @@ function mix(hex, towardHex, pct){
   const bl = Math.round(a.b + (b.b-a.b)*pct);
   return `rgb(${r}, ${g}, ${bl})`;
 }
+function mixAlpha(hex, towardHex, pct, alpha){
+  const a = hexToRgb(hex), b = hexToRgb(towardHex);
+  const r = Math.round(a.r + (b.r-a.r)*pct);
+  const g = Math.round(a.g + (b.g-a.g)*pct);
+  const bl = Math.round(a.b + (b.b-a.b)*pct);
+  return `rgba(${r}, ${g}, ${bl}, ${alpha})`;
+}
 function luminance(hex){
   const {r,g,b} = hexToRgb(hex);
   return (0.299*r + 0.587*g + 0.114*b);
@@ -672,10 +663,12 @@ function applyTheme(){
   const mixTarget = isDark ? '#ffffff' : '#000000';
   const root = document.documentElement.style;
   root.setProperty('--bg', c.background);
-  root.setProperty('--surface', mix(c.background, mixTarget, 0.06));
-  root.setProperty('--surface-2', mix(c.background, mixTarget, 0.11));
+  root.setProperty('--surface', mixAlpha(c.background, mixTarget, 0.06, 0.6));
+  root.setProperty('--surface-2', mixAlpha(c.background, mixTarget, 0.11, 0.7));
   root.setProperty('--primary', c.primary);
   root.setProperty('--secondary', c.secondary);
+  root.setProperty('--primary-a', mixAlpha(c.primary, mixTarget, 0, 0.78));
+  root.setProperty('--secondary-a', mixAlpha(c.secondary, mixTarget, 0, 0.78));
   root.setProperty('--accent', c.accent);
   root.setProperty('--text', isDark ? '#e9eae8' : '#1b1b1b');
   root.setProperty('--muted', isDark ? '#9aa19f' : '#6b6b6b');
@@ -692,6 +685,65 @@ function applyHeader(){
 }
 applyTheme();
 applyHeader();
+
+/* ===================== BACKGROUND IMAGE (frosted glass) ===================== */
+const BG_STORAGE_KEY = 'dashboard-bg-image';
+function applyBackgroundImage(value){
+  const layer = document.getElementById('bgLayer');
+  layer.style.backgroundImage = value ? `url("${value}")` : 'none';
+}
+function loadBackgroundImage(){
+  try{
+    const saved = localStorage.getItem(BG_STORAGE_KEY);
+    if(saved) applyBackgroundImage(saved);
+  }catch(e){}
+}
+loadBackgroundImage();
+
+(function initBackgroundModal(){
+  const overlay = document.getElementById('bgOverlay');
+  const urlInput = document.getElementById('bgUrlInput');
+  const fileInput = document.getElementById('bgFileInput');
+
+  function openModal(){
+    let current = '';
+    try{ current = localStorage.getItem(BG_STORAGE_KEY) || ''; }catch(e){}
+    urlInput.value = current.startsWith('data:') ? '' : current;
+    fileInput.value = '';
+    overlay.classList.add('open');
+  }
+  function closeModal(){ overlay.classList.remove('open'); }
+
+  document.getElementById('bgSettingsBtn').onclick = openModal;
+  document.getElementById('bgCancelBtn').onclick = closeModal;
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeModal(); });
+
+  document.getElementById('bgRemoveBtn').onclick = ()=>{
+    try{ localStorage.removeItem(BG_STORAGE_KEY); }catch(e){}
+    applyBackgroundImage('');
+    closeModal();
+  };
+
+  document.getElementById('bgApplyBtn').onclick = ()=>{
+    const file = fileInput.files && fileInput.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        try{ localStorage.setItem(BG_STORAGE_KEY, reader.result); }catch(e){}
+        applyBackgroundImage(reader.result);
+        closeModal();
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+    const url = urlInput.value.trim();
+    if(url){
+      try{ localStorage.setItem(BG_STORAGE_KEY, url); }catch(e){}
+      applyBackgroundImage(url);
+    }
+    closeModal();
+  };
+})();
 
 /* ===================== STATE ===================== */
 const STORAGE_KEY = 'uk-move-tracker-v1';
@@ -722,6 +774,12 @@ const defaultData = () => ({
   checklist: [],
   shopping: [],
   accommodation: [],
+  applications: [
+    {id: uid(), company:'Google (UK)', role:'Product Manager', status:'Working', salary:'£80k – £120k', dateApplied:'2024/08/01'},
+    {id: uid(), company:'Spotify', role:'Song Source Engineer', status:'Applied', salary:'£60k – £90k', dateApplied:'2024/08/12'},
+    {id: uid(), company:'Adobe', role:'Exp. Data Analyst', status:'Interviewing', salary:'£70k – £110k', dateApplied:'2024/08/22'},
+    {id: uid(), company:'Startup (Acme)', role:'Marketing Lead', status:'Rejected', salary:'–', dateApplied:'2024/08/22'}
+  ],
   travel: {
     activeTripId: 'trip_tokyo_default',
     trips: [
@@ -768,7 +826,47 @@ const defaultData = () => ({
       }
     ]
   },
-  notes: ''
+  notes: '',
+  budget: {
+    monthlyAmount: '3900',
+    income: [
+      {id:uid(), desc:'Salary', planned:'2100', actual:'2100'},
+      {id:uid(), desc:'Freelance', planned:'500', actual:'400'},
+      {id:uid(), desc:'Business Income', planned:'300', actual:'250'},
+      {id:uid(), desc:'Interest Income', planned:'100', actual:'120'},
+      {id:uid(), desc:'Other Income', planned:'100', actual:'80'}
+    ],
+    fixed: [
+      {id:uid(), desc:'Rent', planned:'650', actual:'650'},
+      {id:uid(), desc:'Utilities', planned:'140', actual:'130'},
+      {id:uid(), desc:'Internet', planned:'35', actual:'35'},
+      {id:uid(), desc:'Mobile', planned:'25', actual:'20'},
+      {id:uid(), desc:'Insurance', planned:'50', actual:'40'},
+      {id:uid(), desc:'Subscription', planned:'45', actual:'40'}
+    ],
+    variable: [
+      {id:uid(), desc:'Groceries', planned:'175', actual:'160'},
+      {id:uid(), desc:'Dining Out', planned:'90', actual:'85'},
+      {id:uid(), desc:'Transport', planned:'120', actual:'110'},
+      {id:uid(), desc:'Shopping', planned:'100', actual:'90'},
+      {id:uid(), desc:'Entertainment', planned:'80', actual:'90'},
+      {id:uid(), desc:'Health', planned:'90', actual:'45'},
+      {id:uid(), desc:'Miscellaneous', planned:'80', actual:'70'}
+    ],
+    savings: [
+      {id:uid(), desc:'Emergency Fund', planned:'300', actual:'200'},
+      {id:uid(), desc:'Travel Fund', planned:'150', actual:'150'},
+      {id:uid(), desc:'Investment Fund', planned:'200', actual:'180'},
+      {id:uid(), desc:'Education Fund', planned:'100', actual:'100'},
+      {id:uid(), desc:'Other Savings', planned:'100', actual:'100'}
+    ],
+    debts: [
+      {id:uid(), desc:'Student Loan', total:'3000', paid:'300'},
+      {id:uid(), desc:'Credit Card', total:'1000', paid:'200'},
+      {id:uid(), desc:'Personal Loan', total:'800', paid:'100'},
+      {id:uid(), desc:'Other Loan', total:'0', paid:'0'}
+    ]
+  }
 });
 
 /* ===================== STORAGE ===================== */
@@ -803,7 +901,16 @@ function mergeWithDefaults(record){
   if(!Array.isArray(merged.checklist)) merged.checklist = base.checklist;
   if(!Array.isArray(merged.shopping)) merged.shopping = base.shopping;
   if(!Array.isArray(merged.accommodation)) merged.accommodation = base.accommodation;
+  if(!Array.isArray(merged.applications)) merged.applications = base.applications;
   if(typeof merged.notes !== 'string') merged.notes = base.notes;
+  if(!merged.budget || typeof merged.budget !== 'object'){
+    merged.budget = base.budget;
+  } else {
+    if(merged.budget.monthlyAmount === undefined || merged.budget.monthlyAmount === null) merged.budget.monthlyAmount = base.budget.monthlyAmount;
+    ['income','fixed','variable','savings','debts'].forEach(k=>{
+      merged.budget[k] = Array.isArray(merged.budget[k]) ? merged.budget[k] : base.budget[k];
+    });
+  }
   ['checklist','shopping'].forEach(kind=>{
     merged[kind].forEach(cat=>{
       cat.items = cat.items || [];
@@ -1340,6 +1447,156 @@ document.getElementById('accAddBtn').onclick = ()=>{
   render(); saveData();
 };
 
+/* ===================== APPLICATION TRACKER ===================== */
+function appPillClass(status){
+  if(status === 'Working') return 'pill-working';
+  if(status === 'Applied') return 'pill-applied';
+  if(status === 'Interviewing') return 'pill-interviewing';
+  return 'pill-rejected';
+}
+function renderApplications(){
+  const tbody = document.getElementById('appTableBody');
+  tbody.innerHTML = data.applications.map((row, idx) => `
+    <tr>
+      <td>${idx + 1}</td>
+      <td><span class="app-cell" contenteditable="true" spellcheck="false" data-afield="company" data-arow="${row.id}">${escapeHtml(row.company)}</span></td>
+      <td><span class="app-cell" contenteditable="true" spellcheck="false" data-afield="role" data-arow="${row.id}">${escapeHtml(row.role)}</span></td>
+      <td>
+        <select class="pill-select ${appPillClass(row.status)}" data-afield="status" data-arow="${row.id}">
+          <option value="Working" ${row.status==='Working'?'selected':''}>Working</option>
+          <option value="Applied" ${row.status==='Applied'?'selected':''}>Applied</option>
+          <option value="Interviewing" ${row.status==='Interviewing'?'selected':''}>Interviewing</option>
+          <option value="Rejected" ${row.status==='Rejected'?'selected':''}>Rejected</option>
+        </select>
+      </td>
+      <td><span class="app-cell" contenteditable="true" spellcheck="false" data-afield="salary" data-arow="${row.id}">${escapeHtml(row.salary)}</span></td>
+      <td><span class="app-cell" contenteditable="true" spellcheck="false" data-afield="dateApplied" data-arow="${row.id}">${escapeHtml(row.dateApplied)}</span></td>
+      <td class="acc-del"><button data-appdel="${row.id}">✕</button></td>
+    </tr>`).join('');
+
+  tbody.querySelectorAll('[contenteditable][data-afield]').forEach(el=>{
+    el.onkeydown = (e)=>{ if(e.key==='Enter'){ e.preventDefault(); el.blur(); } };
+    el.onblur = ()=>{
+      const row = data.applications.find(r=>r.id===el.dataset.arow);
+      if(!row) return;
+      row[el.dataset.afield] = el.textContent.trim();
+      saveData();
+    };
+  });
+  tbody.querySelectorAll('select[data-afield]').forEach(sel=>{
+    sel.onchange = ()=>{
+      const row = data.applications.find(r=>r.id===sel.dataset.arow);
+      if(!row) return;
+      row[sel.dataset.afield] = sel.value;
+      render(); saveData();
+    };
+  });
+  tbody.querySelectorAll('[data-appdel]').forEach(btn=>{
+    btn.onclick = ()=>{ data.applications = data.applications.filter(r=>r.id!==btn.dataset.appdel); render(); saveData(); };
+  });
+}
+document.getElementById('appAddBtn').onclick = ()=>{
+  data.applications.push({id:uid(), company:'', role:'', status:'Working', salary:'', dateApplied:''});
+  render(); saveData();
+};
+
+/* ===================== MONTHLY BUDGET ===================== */
+function fmtGBP(n){ return '£' + Math.round(n).toLocaleString('en-GB'); }
+
+// Shared renderer for the four planned/actual tables (income, fixed, variable, savings).
+function budgetPlannedActualHtml(list, key){
+  let totalP = 0, totalA = 0;
+  const rows = list.map(r=>{
+    totalP += parseNum(r.planned); totalA += parseNum(r.actual);
+    return `<tr>
+      <td><span class="be" contenteditable="true" spellcheck="false" data-bfield="desc" data-btable="${key}" data-browid="${r.id}">${escapeHtml(r.desc)}</span></td>
+      <td><input type="text" class="bnum" data-bfield="planned" data-btable="${key}" data-browid="${r.id}" value="${escapeHtml(r.planned)}"></td>
+      <td><input type="text" class="bnum" data-bfield="actual" data-btable="${key}" data-browid="${r.id}" value="${escapeHtml(r.actual)}"></td>
+      <td class="brow-del"><button data-bdel="${r.id}" data-btable="${key}">✕</button></td>
+    </tr>`;
+  }).join('');
+  return rows + `<tr class="total-row"><td>Total</td><td>${fmtGBP(totalP)}</td><td>${fmtGBP(totalA)}</td><td></td></tr>`;
+}
+
+// Debts table: user enters Total + Paid, Left is always computed.
+function budgetDebtsHtml(list){
+  let totalT = 0, totalPaid = 0, totalLeft = 0;
+  const rows = list.map(r=>{
+    const total = parseNum(r.total), paid = parseNum(r.paid);
+    const left = Math.max(0, total - paid);
+    totalT += total; totalPaid += paid; totalLeft += left;
+    return `<tr>
+      <td><span class="be" contenteditable="true" spellcheck="false" data-bfield="desc" data-btable="debts" data-browid="${r.id}">${escapeHtml(r.desc)}</span></td>
+      <td><input type="text" class="bnum" data-bfield="total" data-btable="debts" data-browid="${r.id}" value="${escapeHtml(r.total)}"></td>
+      <td><input type="text" class="bnum" data-bfield="paid" data-btable="debts" data-browid="${r.id}" value="${escapeHtml(r.paid)}"></td>
+      <td class="bnum-readonly">${fmtGBP(left)}</td>
+      <td class="brow-del"><button data-bdel="${r.id}" data-btable="debts">✕</button></td>
+    </tr>`;
+  }).join('');
+  return rows + `<tr class="total-row"><td>Total</td><td>${fmtGBP(totalT)}</td><td>${fmtGBP(totalPaid)}</td><td>${fmtGBP(totalLeft)}</td><td></td></tr>`;
+}
+
+function renderBudget(){
+  const b = data.budget;
+  document.getElementById('budgetMonthlyInput').value = b.monthlyAmount;
+  ['income','fixed','variable','savings'].forEach(key=>{
+    document.getElementById('budgetRows-'+key).innerHTML = budgetPlannedActualHtml(b[key], key);
+  });
+  document.getElementById('budgetRows-debts').innerHTML = budgetDebtsHtml(b.debts);
+  attachBudgetEvents();
+}
+
+function attachBudgetEvents(){
+  document.getElementById('budgetMonthlyInput').oninput = (e)=>{
+    data.budget.monthlyAmount = e.target.value;
+    saveData();
+  };
+
+  document.querySelectorAll('.budget-table .be[data-bfield]').forEach(el=>{
+    el.onkeydown = (e)=>{ if(e.key==='Enter'){ e.preventDefault(); el.blur(); } };
+    el.onblur = ()=>{
+      const row = data.budget[el.dataset.btable].find(r=>r.id===el.dataset.browid);
+      if(!row) return;
+      row.desc = el.textContent.trim();
+      saveData();
+    };
+  });
+  document.querySelectorAll('.budget-table .bnum[data-bfield]').forEach(inp=>{
+    inp.oninput = ()=>{
+      const row = data.budget[inp.dataset.btable].find(r=>r.id===inp.dataset.browid);
+      if(!row) return;
+      row[inp.dataset.bfield] = inp.value;
+      saveData(); renderBudget();
+    };
+  });
+  document.querySelectorAll('.budget-table [data-bdel]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const key = btn.dataset.btable;
+      data.budget[key] = data.budget[key].filter(r=>r.id!==btn.dataset.bdel);
+      saveData(); renderBudget();
+    };
+  });
+  document.querySelectorAll('.add-brow-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      const row = btn.closest('.budget-add-row');
+      const key = row.dataset.badd;
+      const desc = row.querySelector('.new-b-desc').value.trim();
+      const a = row.querySelector('.new-b-a').value.trim();
+      const bVal = row.querySelector('.new-b-b').value.trim();
+      if(!desc) return;
+      if(key === 'debts'){
+        data.budget.debts.push({id:'b'+uid(), desc, total:a, paid:bVal});
+      } else {
+        data.budget[key].push({id:'b'+uid(), desc, planned:a, actual:bVal});
+      }
+      row.querySelector('.new-b-desc').value = '';
+      row.querySelector('.new-b-a').value = '';
+      row.querySelector('.new-b-b').value = '';
+      saveData(); renderBudget();
+    };
+  });
+}
+
 /* ===================== TRAVEL ITINERARY ===================== */
 function getActiveTrip(){
   const t = data.travel;
@@ -1347,17 +1604,53 @@ function getActiveTrip(){
   return t.trips.find(tr=>tr.id===t.activeTripId) || t.trips[0];
 }
 
+/* ---- Add Trip modal ---- */
+function openAddTripModal(){
+  const overlay = document.getElementById('addTripOverlay');
+  document.getElementById('modalTripName').value = '';
+  document.getElementById('modalTripRange').value = '';
+  overlay.classList.add('open');
+  setTimeout(()=> document.getElementById('modalTripName').focus(), 50);
+}
+function closeAddTripModal(){
+  document.getElementById('addTripOverlay').classList.remove('open');
+}
+function confirmAddTrip(){
+  const name = document.getElementById('modalTripName').value.trim();
+  if(!name){ document.getElementById('modalTripName').focus(); return; }
+  const range = document.getElementById('modalTripRange').value.trim();
+  const newTrip = {id:'trip_'+uid(), name, range, flight:[], stay:[], days:[]};
+  data.travel.trips.push(newTrip);
+  data.travel.activeTripId = newTrip.id;
+  closeAddTripModal();
+  render(); saveData();
+}
+(function initAddTripModal(){
+  const overlay = document.getElementById('addTripOverlay');
+  document.getElementById('modalAddBtn').onclick = confirmAddTrip;
+  document.getElementById('modalCancelBtn').onclick = closeAddTripModal;
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeAddTripModal(); });
+  document.getElementById('modalTripName').addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){ e.preventDefault(); confirmAddTrip(); }
+    else if(e.key === 'Escape'){ closeAddTripModal(); }
+  });
+  document.getElementById('modalTripRange').addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){ e.preventDefault(); confirmAddTrip(); }
+    else if(e.key === 'Escape'){ closeAddTripModal(); }
+  });
+})();
+
 function renderTravel(){
   const t = data.travel;
   const select = document.getElementById('itinTripSelect');
   const delBtn = document.getElementById('itinTripDelBtn');
   if(!t || !t.trips.length){
-    select.innerHTML = '<option>No trips yet</option>';
+    select.innerHTML = '<option value="">No trips yet</option>';
     document.getElementById('itinTripName').textContent = '';
     document.getElementById('itinTripRange').textContent = '';
     document.getElementById('itinFlightList').innerHTML = '';
     document.getElementById('itinStayList').innerHTML = '';
-    document.getElementById('itinDaysContainer').innerHTML = '<div class="empty-cat">No trips yet. Add one below.</div>';
+    document.getElementById('itinDaysContainer').innerHTML = '<div class="empty-cat">No trips yet. Click "+ Add Trip" to start one.</div>';
     if(delBtn) delBtn.style.visibility = 'hidden';
     attachTravelStaticEvents();
     return;
@@ -1366,7 +1659,7 @@ function renderTravel(){
 
   select.innerHTML = t.trips.map(trip =>
     `<option value="${trip.id}" ${trip.id===t.activeTripId?'selected':''}>${escapeHtml(trip.name)}</option>`
-  ).join('') + `<option value="__new__">+ Add New Trip</option>`;
+  ).join('');
 
   const trip = getActiveTrip();
   document.getElementById('itinTripName').textContent = trip.name;
@@ -1422,19 +1715,15 @@ function renderTravel(){
 
 function attachTravelStaticEvents(){
   const select = document.getElementById('itinTripSelect');
+
   select.onchange = ()=>{
-    if(select.value === '__new__'){
-      const name = prompt('Name this trip:');
-      if(!name || !name.trim()){ renderTravel(); return; }
-      const newTrip = {id:'trip_'+uid(), name:name.trim(), range:'', flight:[], stay:[], days:[]};
-      data.travel.trips.push(newTrip);
-      data.travel.activeTripId = newTrip.id;
-      render(); saveData();
-      return;
-    }
+    if(!select.value) return;
     data.travel.activeTripId = select.value;
     render(); saveData();
   };
+
+  const addTripBtn = document.getElementById('itinAddTripBtn');
+  if(addTripBtn) addTripBtn.onclick = openAddTripModal;
 
   const delBtn = document.getElementById('itinTripDelBtn');
   delBtn.onclick = ()=>{
@@ -1637,7 +1926,9 @@ function render(){
   renderCalendar();
   updateSpentTotals();
   renderAccommodation();
+  renderApplications();
   renderTravel();
+  renderBudget();
   initSortables();
 }
 loadData();
