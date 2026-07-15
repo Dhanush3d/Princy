@@ -2,12 +2,24 @@
 // connected Upstash Redis database. Credentials come from env vars that
 // Vercel sets automatically when you connect the database (Storage tab).
 // The frontend never sees these — it only talks to /api/data.
-
+//
+// NOTE: when the same Upstash store is connected to more than one Vercel
+// project, Vercel prefixes the env var names with the project name
+// (e.g. "princy_KV_REST_API_URL") to avoid collisions. This checks the
+// prefixed name first and falls back to the plain name, so it works
+// either way without you having to remember which one applies.
 const KEY = 'move-tracker-data';
 
+function getEnv(...names) {
+  for (const n of names) {
+    if (process.env[n]) return process.env[n];
+  }
+  return null;
+}
+
 export default async function handler(req, res) {
-  const KV_URL = process.env.KV_REST_API_URL;
-  const KV_TOKEN = process.env.KV_REST_API_TOKEN;
+  const KV_URL = getEnv('princy_KV_REST_API_URL', 'KV_REST_API_URL', 'princy_REDIS_URL');
+  const KV_TOKEN = getEnv('princy_KV_REST_API_TOKEN', 'KV_REST_API_TOKEN');
 
   if (!KV_URL || !KV_TOKEN) {
     return res.status(500).json({
